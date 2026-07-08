@@ -9,6 +9,8 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import { ThemeProvider } from '@providers/theme-provider'
+import { AuthProvider } from '#/features/auth/hook/use-auth'
+import { StarsBackground } from '#/components/animate-ui/components/backgrounds/stars'
 import { Toaster } from '#/components/ui/sonner'
 import appCss from '../styles.css?url'
 
@@ -48,22 +50,27 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="stars-bg min-h-screen">
         <ThemeProvider>
-          {children}
-          <Toaster />
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-              TanStackQueryDevtools,
-            ]}
-          />
+          <AuthProvider>
+            <StarsBackground asBackground />
+            <div className="relative z-10 min-h-screen">
+              {children}
+              <Toaster />
+              <TanStackDevtools
+                config={{
+                  position: 'bottom-right',
+                }}
+                plugins={[
+                  {
+                    name: 'Tanstack Router',
+                    render: <TanStackRouterDevtoolsPanel />,
+                  },
+                  TanStackQueryDevtools,
+                ]}
+              />
+            </div>
+          </AuthProvider>
         </ThemeProvider>
         <Scripts />
       </body>
