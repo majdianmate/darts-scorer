@@ -1,0 +1,3 @@
+- 0.1.0
+- Initialized project
+- dark/light theme
