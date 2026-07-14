@@ -28,6 +28,7 @@ interface AuthContextValue {
   isHydrated: boolean
   isSigningOut: boolean
   signIn: (result: AuthSignInResult) => void
+  updateUser: (user: Partial<AuthUser>) => void
   signOut: () => Promise<void>
 }
 
@@ -53,6 +54,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setAuth(nextAuth)
     saveAuthToStorage(nextAuth)
+  }, [])
+
+  const updateUser = useCallback((user: Partial<AuthUser>) => {
+    setAuth((currentAuth) => {
+      if (!currentAuth) {
+        return currentAuth
+      }
+
+      const nextAuth: AuthState = {
+        ...currentAuth,
+        user: {
+          ...currentAuth.user,
+          ...user,
+        },
+      }
+
+      saveAuthToStorage(nextAuth)
+
+      return nextAuth
+    })
   }, [])
 
   const signOut = useCallback(async () => {
@@ -86,9 +107,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isHydrated,
       isSigningOut,
       signIn,
+      updateUser,
       signOut,
     }),
-    [auth, isHydrated, isSigningOut, signIn, signOut],
+    [auth, isHydrated, isSigningOut, signIn, updateUser, signOut],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
