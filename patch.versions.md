@@ -6,3 +6,6 @@
 -- auth system - sign up - sign in - sign out
 -- use auth
 -- background
+
+- 0.2.1
+-- sidebar
