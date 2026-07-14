@@ -50,7 +50,7 @@ export default function SignInPage() {
       toast.success('Signed in successfully', {
         description: `Welcome back, ${result.user.displayName}.`,
       })
-      await navigate({ to: '/' })
+      await navigate({ to: '/dashboard' })
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -74,7 +74,7 @@ export default function SignInPage() {
           </CardHeader>
           <CardFooter className="border-t px-6 py-6">
             <Button asChild className="w-full">
-              <Link to="/">Go to home</Link>
+              <Link to="/dashboard">Go to home</Link>
             </Button>
           </CardFooter>
         </Card>

@@ -2,15 +2,17 @@
 
 import * as React from 'react';
 import {
-  type HTMLMotionProps,
   motion,
   useMotionValue,
   useSpring,
-  type SpringOptions,
-  type Transition,
 } from 'motion/react';
 
 import { cn } from '#/lib/utils.ts';
+import type {
+  HTMLMotionProps,
+  SpringOptions,
+  Transition,
+} from 'motion/react';
 
 type StarLayerProps = HTMLMotionProps<'div'> & {
   count: number;
@@ -33,7 +35,7 @@ function StarLayer({
   count = 1000,
   size = 1,
   transition = { repeat: Infinity, duration: 50, ease: 'linear' },
-  starColor = '#fff',
+  starColor = 'var(--stars-color)',
   className,
   ...props
 }: StarLayerProps) {
@@ -86,7 +88,7 @@ function StarsBackground({
   factor = 0.05,
   speed = 50,
   transition = { stiffness: 50, damping: 20 },
-  starColor = '#fff',
+  starColor = 'var(--stars-color)',
   pointerEvents = true,
   asBackground = false,
   ...props
@@ -129,7 +131,7 @@ function StarsBackground({
     <div
       data-slot="stars-background"
       className={cn(
-        'relative size-full overflow-hidden bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)]',
+        'relative size-full overflow-hidden bg-[image:var(--stars-background)]',
         asBackground && 'pointer-events-none fixed inset-0 -z-10',
         className,
       )}

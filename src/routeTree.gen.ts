@@ -11,7 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProtectedSettingsRouteImport } from './routes/_protected.settings'
+import { Route as ProtectedPatchNotesRouteImport } from './routes/_protected.patch-notes'
+import { Route as ProtectedMatchRouteImport } from './routes/_protected.match'
+import { Route as ProtectedHelpRouteImport } from './routes/_protected.help'
+import { Route as ProtectedDashboardRouteImport } from './routes/_protected.dashboard'
+import { Route as ProtectedClubsRouteImport } from './routes/_protected.clubs'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -23,38 +30,121 @@ const SignInRoute = SignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedRoute = ProtectedRouteImport.update({
+  id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedSettingsRoute = ProtectedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedPatchNotesRoute = ProtectedPatchNotesRouteImport.update({
+  id: '/patch-notes',
+  path: '/patch-notes',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedMatchRoute = ProtectedMatchRouteImport.update({
+  id: '/match',
+  path: '/match',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedHelpRoute = ProtectedHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedClubsRoute = ProtectedClubsRouteImport.update({
+  id: '/clubs',
+  path: '/clubs',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/clubs': typeof ProtectedClubsRoute
+  '/dashboard': typeof ProtectedDashboardRoute
+  '/help': typeof ProtectedHelpRoute
+  '/match': typeof ProtectedMatchRoute
+  '/patch-notes': typeof ProtectedPatchNotesRoute
+  '/settings': typeof ProtectedSettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/clubs': typeof ProtectedClubsRoute
+  '/dashboard': typeof ProtectedDashboardRoute
+  '/help': typeof ProtectedHelpRoute
+  '/match': typeof ProtectedMatchRoute
+  '/patch-notes': typeof ProtectedPatchNotesRoute
+  '/settings': typeof ProtectedSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_protected': typeof ProtectedRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/_protected/clubs': typeof ProtectedClubsRoute
+  '/_protected/dashboard': typeof ProtectedDashboardRoute
+  '/_protected/help': typeof ProtectedHelpRoute
+  '/_protected/match': typeof ProtectedMatchRoute
+  '/_protected/patch-notes': typeof ProtectedPatchNotesRoute
+  '/_protected/settings': typeof ProtectedSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/sign-up'
+  fullPaths:
+    | '/'
+    | '/sign-in'
+    | '/sign-up'
+    | '/clubs'
+    | '/dashboard'
+    | '/help'
+    | '/match'
+    | '/patch-notes'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up'
-  id: '__root__' | '/' | '/sign-in' | '/sign-up'
+  to:
+    | '/'
+    | '/sign-in'
+    | '/sign-up'
+    | '/clubs'
+    | '/dashboard'
+    | '/help'
+    | '/match'
+    | '/patch-notes'
+    | '/settings'
+  id:
+    | '__root__'
+    | '/'
+    | '/_protected'
+    | '/sign-in'
+    | '/sign-up'
+    | '/_protected/clubs'
+    | '/_protected/dashboard'
+    | '/_protected/help'
+    | '/_protected/match'
+    | '/_protected/patch-notes'
+    | '/_protected/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProtectedRoute: typeof ProtectedRouteWithChildren
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
 }
@@ -75,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -82,11 +179,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/settings': {
+      id: '/_protected/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedSettingsRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/patch-notes': {
+      id: '/_protected/patch-notes'
+      path: '/patch-notes'
+      fullPath: '/patch-notes'
+      preLoaderRoute: typeof ProtectedPatchNotesRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/match': {
+      id: '/_protected/match'
+      path: '/match'
+      fullPath: '/match'
+      preLoaderRoute: typeof ProtectedMatchRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/help': {
+      id: '/_protected/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof ProtectedHelpRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/dashboard': {
+      id: '/_protected/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof ProtectedDashboardRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/clubs': {
+      id: '/_protected/clubs'
+      path: '/clubs'
+      fullPath: '/clubs'
+      preLoaderRoute: typeof ProtectedClubsRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
+interface ProtectedRouteChildren {
+  ProtectedClubsRoute: typeof ProtectedClubsRoute
+  ProtectedDashboardRoute: typeof ProtectedDashboardRoute
+  ProtectedHelpRoute: typeof ProtectedHelpRoute
+  ProtectedMatchRoute: typeof ProtectedMatchRoute
+  ProtectedPatchNotesRoute: typeof ProtectedPatchNotesRoute
+  ProtectedSettingsRoute: typeof ProtectedSettingsRoute
+}
+
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedClubsRoute: ProtectedClubsRoute,
+  ProtectedDashboardRoute: ProtectedDashboardRoute,
+  ProtectedHelpRoute: ProtectedHelpRoute,
+  ProtectedMatchRoute: ProtectedMatchRoute,
+  ProtectedPatchNotesRoute: ProtectedPatchNotesRoute,
+  ProtectedSettingsRoute: ProtectedSettingsRoute,
+}
+
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProtectedRoute: ProtectedRouteWithChildren,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
 }
