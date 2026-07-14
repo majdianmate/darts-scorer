@@ -39,11 +39,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --stars-color: oklch(0.205 0 0 / 18%);
+  --stars-color: oklch(0.205 0 0 / 32%);
   --stars-background: radial-gradient(
     ellipse at bottom,
-    oklch(0.96 0 0) 0%,
-    oklch(0.985 0 0) 42%,
+    oklch(0.9 0 0) 0%,
+    oklch(0.965 0 0) 45%,
     oklch(1 0 0) 100%
   );
 }
@@ -151,7 +151,10 @@ body {
 }
 
 body.stars-bg {
-  background: transparent;
+  background-color: var(--background);
+  background-image: var(--stars-background);
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 body.stars-bg::before,

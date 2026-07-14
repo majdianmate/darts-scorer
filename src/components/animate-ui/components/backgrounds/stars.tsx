@@ -85,6 +85,7 @@ type StarsBackgroundProps = React.ComponentProps<'div'> & {
 function StarsBackground({
   children,
   className,
+  style,
   factor = 0.05,
   speed = 50,
   transition = { stiffness: 50, damping: 20 },
@@ -131,10 +132,15 @@ function StarsBackground({
     <div
       data-slot="stars-background"
       className={cn(
-        'relative size-full overflow-hidden bg-[image:var(--stars-background)]',
-        asBackground && 'pointer-events-none fixed inset-0 -z-10',
+        'relative size-full overflow-hidden',
+        asBackground && 'pointer-events-none fixed inset-0 z-0',
         className,
       )}
+      style={{
+        backgroundColor: 'var(--background)',
+        backgroundImage: 'var(--stars-background)',
+        ...style,
+      }}
       onMouseMove={
         asBackground
           ? undefined

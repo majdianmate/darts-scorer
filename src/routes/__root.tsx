@@ -53,22 +53,24 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="stars-bg min-h-screen">
         <ThemeProvider>
           <AuthProvider>
-            <StarsBackground asBackground />
-            <div className="relative z-10 min-h-screen">
-              {children}
-              <Toaster />
-              <TanStackDevtools
-                config={{
-                  position: 'bottom-right',
-                }}
-                plugins={[
-                  {
-                    name: 'Tanstack Router',
-                    render: <TanStackRouterDevtoolsPanel />,
-                  },
-                  TanStackQueryDevtools,
-                ]}
-              />
+            <div className="relative isolate min-h-screen">
+              <StarsBackground asBackground />
+              <div className="relative z-10 min-h-screen">
+                {children}
+                <Toaster />
+                <TanStackDevtools
+                  config={{
+                    position: 'bottom-right',
+                  }}
+                  plugins={[
+                    {
+                      name: 'Tanstack Router',
+                      render: <TanStackRouterDevtoolsPanel />,
+                    },
+                    TanStackQueryDevtools,
+                  ]}
+                />
+              </div>
             </div>
           </AuthProvider>
         </ThemeProvider>
