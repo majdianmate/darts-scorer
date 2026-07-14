@@ -55,7 +55,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <AuthProvider>
             <div className="relative isolate min-h-screen">
               <StarsBackground asBackground />
-              <div className="relative z-10 min-h-screen">
+              <div className="relative z-10">
                 {children}
                 <Toaster />
                 <TanStackDevtools

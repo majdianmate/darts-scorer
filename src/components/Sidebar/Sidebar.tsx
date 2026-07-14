@@ -22,14 +22,9 @@ import {
   sidebarQuickActions,
 } from './sidebar-menus'
 import { useUiStore } from '#/store/ui-store'
-import type { ReactNode } from 'react'
 import type { SidebarMenuItem } from './sidebar-menus'
 
-interface SidebarProps {
-  children: ReactNode
-}
-
-export function Sidebar({ children }: SidebarProps) {
+export function Sidebar() {
   const { user, isSigningOut, signOut } = useAuth()
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const [isThemeMounted, setIsThemeMounted] = useState(false)
@@ -40,7 +35,8 @@ export function Sidebar({ children }: SidebarProps) {
   })
   const isCollapsed = !isSidebarOpen
 
-  const displayName = user?.displayName ?? user?.username ?? user?.name ?? 'User'
+  const displayName =
+    user?.displayName ?? user?.username ?? user?.name ?? 'User'
   const email = user?.email ?? 'Signed in'
   const initials = getInitials(displayName)
 
@@ -58,97 +54,92 @@ export function Sidebar({ children }: SidebarProps) {
   }
 
   return (
-    <div
+    <aside
       className={cn(
-        'grid min-h-screen grid-cols-1 bg-transparent lg:transition-[grid-template-columns] lg:duration-300',
-        isCollapsed ? 'lg:grid-cols-[5rem_1fr]' : 'lg:grid-cols-[17.5rem_1fr]',
+        'sticky top-0 z-20 hidden h-screen border-r border-sidebar-border/70 bg-sidebar/72 py-5 text-sidebar-foreground shadow-[18px_0_70px_rgba(15,23,42,0.08)] backdrop-blur-2xl transition-[padding] duration-300 lg:flex lg:flex-col dark:shadow-[18px_0_70px_rgba(0,0,0,0.22)]',
+        isCollapsed ? 'px-3' : 'px-4',
       )}
     >
-      <aside
+      <div
         className={cn(
-          'sticky top-0 z-20 hidden h-screen border-r border-sidebar-border/70 bg-sidebar/72 py-5 text-sidebar-foreground shadow-[18px_0_70px_rgba(15,23,42,0.08)] backdrop-blur-2xl transition-[padding] duration-300 lg:flex lg:flex-col dark:shadow-[18px_0_70px_rgba(0,0,0,0.22)]',
-          isCollapsed ? 'px-3' : 'px-4',
+          'mb-7 flex items-center gap-3 rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/45 px-3 py-3 shadow-sm',
+          isCollapsed && 'justify-center px-2',
         )}
       >
-        <div
-          className={cn(
-            'mb-7 flex items-center gap-3 rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/45 px-3 py-3 shadow-sm',
-            isCollapsed && 'justify-center px-2',
-          )}
-        >
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-sidebar-primary text-sidebar-primary-foreground shadow-sm">
-            <PanelLeft className="size-5" />
-          </div>
-          {!isCollapsed ? (
-            <>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold">Darts Scorer</p>
-                <p className="truncate text-xs text-muted-foreground">
-                  Match control
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="rounded-xl"
-                onClick={() => {
-                  toggleSidebar()
-                  setIsUserMenuOpen(false)
-                }}
-                aria-label="Collapse sidebar"
-              >
-                <PanelLeftClose className="size-4" />
-              </Button>
-            </>
-          ) : null}
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-sidebar-primary text-sidebar-primary-foreground shadow-sm">
+          <PanelLeft className="size-5" />
         </div>
-
-        {isCollapsed ? (
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="mx-auto mb-4 rounded-xl"
-            onClick={toggleSidebar}
-            aria-label="Expand sidebar"
-          >
-            <PanelLeft className="size-4" />
-          </Button>
+        {!isCollapsed ? (
+          <>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold">Darts Scorer</p>
+              <p className="truncate text-xs text-muted-foreground">
+                Match control
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="rounded-xl"
+              onClick={() => {
+                toggleSidebar()
+                setIsUserMenuOpen(false)
+              }}
+              aria-label="Collapse sidebar"
+            >
+              <PanelLeftClose className="size-4" />
+            </Button>
+          </>
         ) : null}
+      </div>
 
-        <SidebarMenu
-          items={mainSidebarMenus}
+      {isCollapsed ? (
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="mx-auto mb-4 rounded-xl"
+          onClick={toggleSidebar}
+          aria-label="Expand sidebar"
+        >
+          <PanelLeft className="size-4" />
+        </Button>
+      ) : null}
+
+      <SidebarMenu
+        items={mainSidebarMenus}
+        pathname={pathname}
+        label="Menu"
+        isCollapsed={isCollapsed}
+      />
+
+      <div
+        className={cn(
+          'mt-6 rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/35 shadow-sm',
+          isCollapsed ? 'p-1.5' : 'p-3',
+        )}
+      >
+        {!isCollapsed ? (
+          <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Quick
+          </p>
+        ) : null}
+        <SidebarMenuList
+          items={sidebarQuickActions}
           pathname={pathname}
-          label="Menu"
           isCollapsed={isCollapsed}
         />
+      </div>
 
-        <div
-          className={cn(
-            'mt-6 rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/35 shadow-sm',
-            isCollapsed ? 'p-1.5' : 'p-3',
-          )}
-        >
-          {!isCollapsed ? (
-            <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Quick
-            </p>
-          ) : null}
-          <SidebarMenuList
-            items={sidebarQuickActions}
-            pathname={pathname}
-            isCollapsed={isCollapsed}
-          />
-        </div>
+      <div className="mt-6">
+        <SidebarMenu
+          items={secondarySidebarMenus}
+          pathname={pathname}
+          label="Secondary"
+          isCollapsed={isCollapsed}
+        />
+      </div>
 
-        <div className="mt-6">
-          <SidebarMenu
-            items={secondarySidebarMenus}
-            pathname={pathname}
-            label="Secondary"
-            isCollapsed={isCollapsed}
-          />
-        </div>
-
+      <div className="mt-auto flex flex-col gap-2 pt-5">
         <ThemeSwitcher
           isCollapsed={isCollapsed}
           isMounted={isThemeMounted}
@@ -156,86 +147,64 @@ export function Sidebar({ children }: SidebarProps) {
           setTheme={setTheme}
           theme={theme}
         />
-
-        <div className="mt-auto pt-5">
-          <div className="relative">
-            {isUserMenuOpen ? (
-              <div
-                className={cn(
-                  'absolute bottom-[calc(100%+0.75rem)] rounded-2xl border border-border/70 bg-popover/92 p-2 text-popover-foreground shadow-[0_22px_70px_rgba(15,23,42,0.14)] backdrop-blur-2xl dark:shadow-[0_22px_70px_rgba(0,0,0,0.35)]',
-                  isCollapsed ? 'left-0 w-56' : 'left-0 right-0',
-                )}
-              >
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-destructive hover:text-destructive"
-                  onClick={handleSignOut}
-                  disabled={isSigningOut}
-                >
-                  <LogOut className="size-4" />
-                  {isSigningOut ? 'Signing out...' : 'Sign out'}
-                </Button>
-              </div>
-            ) : null}
-
-            <button
-              type="button"
+        <div className="relative">
+          {isUserMenuOpen ? (
+            <div
               className={cn(
-                'flex w-full items-center gap-3 rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/40 text-left shadow-sm transition hover:bg-sidebar-accent/70',
-                isCollapsed ? 'justify-center p-2' : 'p-3',
+                'absolute bottom-[calc(100%+0.75rem)] rounded-2xl border border-border/70 bg-popover/92 p-2 text-popover-foreground shadow-[0_22px_70px_rgba(15,23,42,0.14)] backdrop-blur-2xl dark:shadow-[0_22px_70px_rgba(0,0,0,0.35)]',
+                isCollapsed ? 'left-0 w-56' : 'left-0 right-0',
               )}
-              onClick={() => setIsUserMenuOpen((isOpen) => !isOpen)}
-              aria-expanded={isUserMenuOpen}
-              aria-label="Open user menu"
             >
-              {user?.image ? (
-                <img
-                  src={user.image}
-                  alt={`${displayName} profile`}
-                  className="size-10 shrink-0 rounded-full border border-sidebar-border object-cover"
-                />
-              ) : (
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                  {initials}
-                </div>
-              )}
-              {!isCollapsed ? (
-                <>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold">
-                      {displayName}
-                    </p>
-                    <p className="truncate text-xs text-muted-foreground">
-                      {user?.username ? `@${user.username}` : email}
-                    </p>
-                  </div>
-                  <MoreHorizontal className="size-4 text-muted-foreground" />
-                </>
-              ) : null}
-            </button>
-          </div>
-        </div>
-      </aside>
-
-      <main className="min-w-0 px-4 py-4 sm:px-6 lg:px-10 lg:py-8">
-        <div className="mx-auto flex min-h-[calc(100vh-2rem)] w-full max-w-7xl flex-col">
-          <div className="mb-6 rounded-3xl border border-border/70 bg-card/55 px-5 py-4 text-card-foreground shadow-sm backdrop-blur-2xl lg:hidden">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold">Darts Scorer</p>
-                <p className="text-xs text-muted-foreground">
-                  Protected area
-                </p>
-              </div>
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/dashboard">Dashboard</Link>
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-destructive hover:text-destructive"
+                onClick={handleSignOut}
+                disabled={isSigningOut}
+              >
+                <LogOut className="size-4" />
+                {isSigningOut ? 'Signing out...' : 'Sign out'}
               </Button>
             </div>
-          </div>
-          <div className="flex-1">{children}</div>
+          ) : null}
+
+          <button
+            type="button"
+            className={cn(
+              'flex w-full items-center gap-3 rounded-2xl border border-sidebar-border/70 bg-sidebar-accent/40 text-left shadow-sm transition hover:bg-sidebar-accent/70',
+              isCollapsed ? 'justify-center p-2' : 'p-3',
+            )}
+            onClick={() => setIsUserMenuOpen((isOpen) => !isOpen)}
+            aria-expanded={isUserMenuOpen}
+            aria-label="Open user menu"
+          >
+            {user?.image ? (
+              <img
+                src={user.image}
+                alt={`${displayName} profile`}
+                className="size-10 shrink-0 rounded-full border border-sidebar-border object-cover"
+              />
+            ) : (
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                {initials}
+              </div>
+            )}
+            {!isCollapsed ? (
+              <>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold">
+                    {displayName}
+                  </p>
+                  <p className="truncate text-xs text-muted-foreground">
+                    {user?.username ? `@${user.username}` : email}
+                  </p>
+                </div>
+                <MoreHorizontal className="size-4 text-muted-foreground" />
+              </>
+            ) : null}
+          </button>
         </div>
-      </main>
-    </div>
+      </div>
+    </aside>
   )
 }
 
@@ -369,7 +338,9 @@ function SidebarMenuList({
   isCollapsed: boolean
 }) {
   return (
-    <div className={cn('space-y-1', isCollapsed && 'flex flex-col items-center')}>
+    <div
+      className={cn('space-y-1', isCollapsed && 'flex flex-col items-center')}
+    >
       {items.map((item) => (
         <SidebarMenuLink
           key={item.href}
@@ -392,7 +363,8 @@ function SidebarMenuLink({
   isCollapsed: boolean
 }) {
   const Icon = item.icon
-  const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
+  const isActive =
+    pathname === item.href || pathname.startsWith(`${item.href}/`)
   const children = item.children ?? []
   const hasChildren = children.length > 0
 
@@ -404,12 +376,15 @@ function SidebarMenuLink({
         className={cn(
           'group flex items-center gap-3 rounded-xl text-sm font-medium text-muted-foreground no-underline hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground',
           isCollapsed ? 'size-11 justify-center px-0 py-0' : 'px-3 py-2.5',
-          isActive &&
-            'bg-sidebar-accent text-sidebar-accent-foreground',
+          isActive && 'bg-sidebar-accent text-sidebar-accent-foreground',
         )}
       >
         <Icon className="size-4 text-foreground group-hover:text-foreground" />
-        {!isCollapsed ? <span className="flex-1 text-foreground group-hover:text-foreground">{item.title}</span> : null}
+        {!isCollapsed ? (
+          <span className="flex-1 text-foreground group-hover:text-foreground">
+            {item.title}
+          </span>
+        ) : null}
         {item.badge && !isCollapsed ? (
           <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
             {item.badge}

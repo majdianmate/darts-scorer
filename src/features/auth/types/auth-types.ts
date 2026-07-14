@@ -1,8 +1,8 @@
-import type { User } from '#/generated/prisma/client'
+import type { User as PrismaUser } from '#/generated/prisma/client'
 
-export type AuthUser = Omit<User, 'password'>
+export type UserType = PrismaUser;
 
-export type { User }
+export type AuthUser = Omit<UserType, 'password'>
 
 export interface AuthSignUpCredentials {
   name: string

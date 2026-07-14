@@ -51,3 +51,13 @@ export type User = Prisma.UserModel
  * 
  */
 export type Session = Prisma.SessionModel
+/**
+ * Model Club
+ * 
+ */
+export type Club = Prisma.ClubModel
+/**
+ * Model ClubMember
+ * 
+ */
+export type ClubMember = Prisma.ClubMemberModel

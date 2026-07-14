@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -9,19 +10,25 @@ datasource db {
 
 model User {
   id          String   @id @default(uuid())
-  name        String
+  name        String?
   displayName String
-  username    String   @unique
+  username    String?   @unique
   image       String?
-  email       String   @unique
-  password    String
+  email       String?   @unique
+  password    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   isAdmin     Boolean  @default(false)
 
-  sessions Session[]
+  /// Guest features
+  hasAccount  Boolean  @default(true)
+  joinCode    String?  @unique
 
+  sessions Session[]
+  members ClubMember[] @relation("userRelation")
+  invitedBy ClubMember[] @relation("invitedByRelation")
+  createdClubs Club[] @relation("createdByRelation")
   @@map("users")
 }
 
@@ -41,4 +48,41 @@ model Session {
   browserEngine String?
   browserEngineVersion String?
   @@map("sessions")
+}
+
+model Club {
+  id String @id @default(uuid())
+  name String
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdById String
+  createdBy   User           @relation(fields: [createdById], references: [id], name: "createdByRelation")
+
+  members ClubMember[]
+  @@map("clubs")
+}
+
+enum ClubMemberRole {
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+model ClubMember {
+  id        String         @id @default(uuid())
+  clubId    String
+  club      Club           @relation(fields: [clubId], references: [id])
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], name: "userRelation")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  role      ClubMemberRole @default(MEMBER)
+
+  invitedAt   DateTime?
+  invitedById String?
+  invitedBy   User?    @relation("invitedByRelation", fields: [invitedById], references: [id])
+
+  @@map("club_members")
 }

@@ -148,6 +148,23 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type EnumClubMemberRoleFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClubMemberRole | Prisma.EnumClubMemberRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumClubMemberRoleFilter<$PrismaModel> | $Enums.ClubMemberRole
+}
+
+export type EnumClubMemberRoleWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClubMemberRole | Prisma.EnumClubMemberRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumClubMemberRoleWithAggregatesFilter<$PrismaModel> | $Enums.ClubMemberRole
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumClubMemberRoleFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumClubMemberRoleFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -293,6 +310,23 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumClubMemberRoleFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClubMemberRole | Prisma.EnumClubMemberRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumClubMemberRoleFilter<$PrismaModel> | $Enums.ClubMemberRole
+}
+
+export type NestedEnumClubMemberRoleWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ClubMemberRole | Prisma.EnumClubMemberRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ClubMemberRole[] | Prisma.ListEnumClubMemberRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumClubMemberRoleWithAggregatesFilter<$PrismaModel> | $Enums.ClubMemberRole
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumClubMemberRoleFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumClubMemberRoleFilter<$PrismaModel>
 }
 
 
